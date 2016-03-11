@@ -22,7 +22,7 @@ m_entry dd 0
 
 .code 
 
-parse_iat:    ;edx = OptionalHeder
+parse_iat:    ;edx = OptionalHeder (tu jest blad nie chce mi sie poprawiac [teraz])
 
  push          ebx
  push          ecx
