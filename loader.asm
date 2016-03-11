@@ -105,7 +105,7 @@ __l1:
  mov           eax,dword ptr[edx + 04h] ;SizeOfBlock
  mov           ecx,02h                                            
  sub           eax,08h
- div           cx
+ idiv          cx
  
  pop           edx
  
