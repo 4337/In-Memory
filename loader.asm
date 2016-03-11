@@ -103,9 +103,9 @@ __l1:
  push          edx
  
  mov           eax,dword ptr[edx + 04h] ;SizeOfBlock
- mov           cl,02h                                            
+ mov           ecx,02h                                            
  sub           eax,08h
- div           cl
+ div           cx
  
  pop           edx
  
