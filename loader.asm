@@ -22,7 +22,7 @@ m_entry dd 0
 
 .code 
 
-parse_iat:    ;edx = OptionalHeder (tu jest blad nie chce mi sie poprawiac [teraz])
+parse_iat:    ;edx = OptionalHeder    
 
  push          ebx
  push          ecx
@@ -51,18 +51,34 @@ parse_iat:    ;edx = OptionalHeder (tu jest blad nie chce mi sie poprawiac [tera
 @@i_loop: 
  cmp          dword ptr[ebx],0
  je           @@i_break; 
- push         ecx
  
+ push         ecx
+ push         eax
+ push         edx
+ 
+ test         dword ptr[ebx],IMAGE_ORDINAL_FLAG32
+ je           @@no_ordinals
+ 
+ push         ebx
+ mov          ebx,dword ptr[ebx]
+ and          ebx,0ffffh
+ push         ebx
+ push         eax
+ call         GetProcAddress
+ pop          ebx
+ jmp          @@set
+ 
+@@no_ordinals: 
  mov          ecx,dword ptr[edx + 01ch] ;ImageBase
  add          ecx,dword ptr[ebx]
  add          ecx,2 
  
- push         eax
- push         edx
- 
  push         ecx
  push         eax
  call         GetProcAddress
+ 
+@@set:
+ 
  mov          dword ptr[ebx],eax
  
  pop          edx
@@ -101,8 +117,9 @@ __l1:
  add           ebx,dword ptr[edx]
  
  push          edx
- 
+
  mov           eax,dword ptr[edx + 04h] ;SizeOfBlock
+ xor           edx,edx
  mov           ecx,02h                                            
  sub           eax,08h
  idiv          cx
