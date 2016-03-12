@@ -59,25 +59,20 @@ parse_iat:    ;edx = OptionalHeder
  test         dword ptr[ebx],IMAGE_ORDINAL_FLAG32
  je           @@no_ordinals
  
- push         ebx
- mov          ebx,dword ptr[ebx]
- and          ebx,0ffffh
- push         ebx
- push         eax
- call         GetProcAddress
- pop          ebx
- jmp          @@set
+ mov          ecx,dword ptr[ebx]
+ and          ecx,0ffffh
+ 
+ jmp          @@g_proc
  
 @@no_ordinals: 
  mov          ecx,dword ptr[edx + 01ch] ;ImageBase
  add          ecx,dword ptr[ebx]
  add          ecx,2 
- 
+
+@@g_proc:
  push         ecx
  push         eax
  call         GetProcAddress
- 
-@@set:
  
  mov          dword ptr[ebx],eax
  
@@ -305,7 +300,6 @@ start:
  je            error_close
  
 ;get (from edx) image-base + adresOfEntryPoint
- 
  
  push          ecx
  mov           ecx,dword ptr[edx + 01ch]  ;ImageBase
