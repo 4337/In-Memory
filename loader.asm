@@ -341,6 +341,9 @@ start:
  ;edx = OptionalHeader
  call          parse_iat
  
+ push          ebx
+ call          CloseHandle
+ 
  call          dword ptr[m_entry]
  
  add           esp,4
